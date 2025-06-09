@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8">
+    <title>ToolTitle</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=11">
+    <link rel="StyleSheet" href="Style.css" type="text/css">
+
+</head>
+
+<body id="Body" >
+
+    <h3>Terrain Modification with File Upload</h3>
+    <p>Effortlessly create terrain modifications by uploading a KML file.</p>
+    <table>
+        <td>
+            <div style="display: none;">
+                &nbsp;<input id="file" class="file" type="file" value="3" size="5" accept=".kml , .kmz"
+                    onchange="document.all['fileText'].value=this.value;" />
+            </div>
+            <div id="filediv">
+                &nbsp;<input id="fileText" type="text" value="" size="2"/>
+                <img style="cursor:pointer" src="img/Browse.png" onclick="document.all['file'].click();" alt="File" />
+            </div>
+        </td>
+    </table>
+    
+    <button id="add" onclick="AddEvent()">Add Event</button>
+    <button id="remove" onclick="RemoveEvent()">Remove Event</button>
+
+    <p>Note: Your KML file should contain a single polygon geometry.</p>
+
+
+
+    <script language="javascript" src="./jquery/jquery-3.1.1.min.js"></script>
+    <script language="javascript" src="./getSGWorld.js"></script>
+    <script language="javascript" src="./ToolsCommon73.js"></script>
+    <img class="logo" src="./KavLogo.png" alt="Logo" height="65px" width="auto" />
+
+
+    <script language="JavaScript">
+
+        var SGWorld = initSGWorld("");
+        var selectedObject;
+        var SplitPosition;
+
+        
+        // SGWorld.AttachEvent("OnSGWorld", OnSGWorld)
+
+        function OnSGWorld(EventID,EventParam){
+            alert("EventId fo OnSGWolrd Event: " + EventID)
+        }
+
+
+
+
+
+        function GetItemName(Id){
+            return SGWorld.ProjectTree.GetItemName(Id);
+        }
+        
+        function SplitLine(){
+            //alert(1)
+            try{
+            //SGWorld.AttachEvent("OnLButtonDown", GetClickPosition);
+            AddEvent()
+            //SGWorld.Command.Execute("1021","")
+
+
+            RemoveEvent()	
+            }
+            catch (error){
+                console.error(error);
+                alert(error)
+            }
+
+        }
+
+        function GetClickPosition(X,Y,Flags){
+            
+        }
+
+        function OnObjectSelected(ObjectID){
+            try{
+            var Object = SGWorld.ProjectTree.GetObject(ObjectID);
+            //alert(Object.Geometry.GeometryTypeStr);
+            var points =  GetObjectVertexes(Object)
+            target = { x: 188954.06, y:  650492.06 , z: 10.84 };
+            findTwoClosestPoints(target,points)
+
+//}
+
+
+            //RemoveEvent()
+            }
+            catch (error){
+                console.error(error);
+                alert(error)
+            }
+        }
+
+        function AddEvent(){
+            SGWorld.AttachEvent("OnObjectSelected", OnObjectSelected);
+            SGWorld.Command.Execute("1021","")
+        }
+
+        function RemoveEvent(){
+            SGWorld.DetachEvent("OnObjectSelected", OnObjectSelected);
+        }
+
+        function convertGeometryPointsToArray(object) {
+            var points = [];
+            var geometryPoints = object.Geometry.Points;
+            var count = geometryPoints.Count;
+
+            for (var i = 0; i < count; i++) {
+                var pt = geometryPoints.Item(i);
+                points.push({
+                    x: pt.X,
+                    y: pt.Y,
+                    z: pt.Z
+                });
+            }
+
+            return points;
+        }
+
+
+        function GetObjectVertexes(object){
+            var points = convertGeometryPointsToArray(object)
+            //alert(points[0].x)
+            return points
+        }
+
+        ///const target = { x: 1, y: 2, z: 3 };
+        ///const points = [
+            ///{ x: 0, y: 0, z: 0 },
+            ///{ x: 2, y: 2, z: 2 },
+            ///{ x: 5, y: 5, z: 5 },
+            ///{ x: 1, y: 2.1, z: 3.1 }
+        ///];
+        function findTwoClosestPoints(targetPoint, pointsArray) {
+            if (!Array.isArray(pointsArray) || pointsArray.length < 2) {
+                throw new Error("At least two points are required in the array.");
+            }
+
+            function distance(p1, p2) {
+                return Math.sqrt(
+                Math.pow(p1.x - p2.x, 2) +
+                Math.pow(p1.y - p2.y, 2) +
+                Math.pow(p1.z - p2.z, 2)
+                );
+            }
+
+            // Clone array manually (no .slice for old compatibility)
+            var sorted = pointsArray.concat(); // shallow copy
+
+            sorted.sort(function(a, b) {
+                return distance(a, targetPoint) - distance(b, targetPoint);
+            });
+            alert(sorted[0].z)
+            alert(sorted[1].z)
+            return [sorted[0], sorted[1]];
+        }
+
+
+
+    </script>
+
+</body>
+
+</html>
