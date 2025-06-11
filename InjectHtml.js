@@ -8,11 +8,11 @@ function injectTerrainModificationUI_IE() {
 
     // Create and append <script> tags
     var scriptSources = [
-        "./jquery/jquery-3.1.1.min.js",
-        "./getSGWorld.js",
-        "./snapIE.js",
-        "./splitTool.js",
-        "./ToolsCommon73.js"
+        "https://cdn.jsdelivr.net/gh/MosheRoimicherCode/MapEdit2/jquery/jquery-3.1.1.min.js",
+        "https://cdn.jsdelivr.net/gh/MosheRoimicherCode/MapEdit2/getSGWorld.js",
+        "https://cdn.jsdelivr.net/gh/MosheRoimicherCode/MapEdit2/snapIE.js",
+        "https://cdn.jsdelivr.net/gh/MosheRoimicherCode/MapEdit2/splitTool.js",
+        "https://cdn.jsdelivr.net/gh/MosheRoimicherCode/MapEdit2/ToolsCommon73.js"
     ];
 
     for (var i = 0; i < scriptSources.length; i++) {
@@ -78,11 +78,7 @@ function injectTerrainModificationUI_IE() {
     addButton.innerText = "Add Event";
     body.appendChild(addButton);
 
-    var removeButton = document.createElement("button");
-    removeButton.setAttribute("id", "remove");
-    removeButton.setAttribute("onclick", "RemoveEvent()");
-    removeButton.innerText = "Remove Event";
-    body.appendChild(removeButton);
+
 
     var note = document.createElement("p");
     note.innerText = "Note: Your KML file should contain a single polygon geometry.";
