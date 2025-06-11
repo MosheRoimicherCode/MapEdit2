@@ -22,3 +22,5 @@ function initSGWorld() {
      };
       return SGWorld;
  }
+
+ var SGWorld = initSGWorld("");
