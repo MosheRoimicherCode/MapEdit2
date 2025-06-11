@@ -75,7 +75,7 @@ function injectTerrainModificationUI_IE() {
     var addButton = document.createElement("button");
     addButton.setAttribute("id", "add");
     addButton.setAttribute("onclick", "AddEvent()");
-    addButton.innerText = "Add Event";
+    addButton.innerText = "Split Line";
     body.appendChild(addButton);
 
 
